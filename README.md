@@ -2,7 +2,7 @@
 
 ## What does this project do?
 
-This project creates customized error pages that mimics the well-known Cloudflare's error page. You can also embed it into your website.
+This project creates customized error pages that mimics the well-known Cloudflare error page. You can also embed it into your website.
 
 ## Quickstart
 
@@ -48,37 +48,41 @@ with open('error.html', 'w') as f:
 webbrowser.open('error.html')
 ```
 
+You can also see this example [here](https://virt.moe/cloudflare-error-page/examples/default).
+
 ![Default error page](doc/default.png)
 
 ## More Examples
 
 ### Catastrophic infrastructure failure
 
-``` Python
-params =  {
-    'title': 'Catastrophic infrastructure failure',
-    'more_information': {
+See this example [here](https://virt.moe/cloudflare-error-page/examples/catastrophic).
+
+``` JavaScript
+params = {
+    "title": "Catastrophic infrastructure failure",
+    "more_information": {
         "text": "cloudflare.com",
         "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
     },
-    'browser_status': {
-        'status': 'error',
-        'status_text': 'Out of Memory',
+    "browser_status": {
+        "status": "error",
+        "status_text": "Out of Memory",
     },
-    'cloudflare_status': {
-        'status': 'error',
-        'location': 'Everywhere',
-        'status_text': 'Not Working',
+    "cloudflare_status": {
+        "status": "error",
+        "location": "Everywhere",
+        "status_text": "Not Working",
     },
-    'host_status': {
-        'status': 'error',
-        'location': 'example.com',
-        'status_text': 'On Fire',
+    "host_status": {
+        "status": "error",
+        "location": "example.com",
+        "status_text": "On Fire",
     },
-    'error_source': 'cloudflare',
-    'what_happened': '<p>There is a catastrophic failure.</p>',
-    'what_can_i_do': '<p>Please try again in a few years.</p>',
-    'perf_sec_by': {
+    "error_source": "cloudflare",
+    "what_happened": "<p>There is a catastrophic failure.</p>",
+    "what_can_i_do": "<p>Please try again in a few years.</p>",
+    "perf_sec_by": {
         "text": "Cloudflare",
         "link": "https://youtube.com/watch?v=dQw4w9WgXcQ",
     },
@@ -89,29 +93,31 @@ params =  {
 
 ### Web server is working
 
-``` Python
+See this example [here](https://virt.moe/cloudflare-error-page/examples/working).
+
+``` JavaScript
 params = {
-    'title': 'Web server is working',
-    'error_code': 200,
+    "title": "Web server is working",
+    "error_code": 200,
     "more_information": {
         "hidden": True,
     },
-    'browser_status': {
-        'status': 'ok',
-        'status_text': 'Seems Working',
+    "browser_status": {
+        "status": "ok",
+        "status_text": "Seems Working",
     },
-    'cloudflare_status': {
-        'status': 'ok',
-        'status_text': 'Often Working',
+    "cloudflare_status": {
+        "status": "ok",
+        "status_text": "Often Working",
     },
-    'host_status': {
-        'status': 'ok',
-        'location': 'example.com',
-        'status_text': 'Just Working',
+    "host_status": {
+        "status": "ok",
+        "location": "example.com",
+        "status_text": "Just Working",
     },
-    'error_source': 'host',
-    'what_happened': '<p>This site is still working. And it looks great.</p>',
-    'what_can_i_do': '<p>Visit the site before it crashes someday.</p>',
+    "error_source": "host",
+    "what_happened": "<p>This site is still working. And it looks great.</p>",
+    "what_can_i_do": "<p>Visit the site before it crashes someday.</p>",
 }
 ```
 
