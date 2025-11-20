@@ -9,6 +9,7 @@ from flask import (
     json,
     request,
     abort,
+    redirect,
     send_from_directory
 )
 
@@ -52,6 +53,11 @@ def get_page_params(name: str) -> dict:
 @app.route('/<path:name>')
 def index(name: str):
     name = os.path.basename(name)  # keep only the base name
+    lower_name = name.lower()
+    if name != lower_name:
+        return redirect(lower_name)
+    else:
+        name = lower_name
 
     params = get_page_params(name)
     if params is None:
@@ -75,6 +81,11 @@ def index(name: str):
 
     # Render the error page
     return render_cf_error_page(params, use_cdn=use_cdn), 500
+
+
+@app.route('/favicon.ico')
+def favicon_ico():
+    abort(404)
 
 
 if __name__ == '__main__':
