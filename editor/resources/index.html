@@ -43,7 +43,6 @@
 
       // can be changed if specified by '?from=<name>'
       let initialConfig = {
-        "html_title": "cloudflare.com | 500: Internal server error",
         "title": "Internal server error",
         "error_code": 500,
 
@@ -169,7 +168,6 @@
 
       /* Fill form from config */
       function loadConfig(cfg) {
-        $('html_title').value = cfg.html_title ?? '';
         $('title').value = cfg.title ?? '';
         $('error_code').value = cfg.error_code ?? '';
 
@@ -206,7 +204,6 @@
       /* Read config from form inputs */
       function readConfig() {
         return {
-          html_title: $('html_title').value,
           title: $('title').value,
           error_code: Number($('error_code').value) || 0,
           more_information: {
@@ -547,14 +544,6 @@
           <!-- Basic properties -->
           <div class="mb-3">
             <!-- <h6 class="mb-2">Page</h6> -->
-
-            <div class="form-row">
-              <label for="html_title">HTML Title</label>
-              <div class="control">
-                <input id="html_title" class="form-control form-control-sm"
-                  placeholder="cloudflare.com | 500: Internal server error" />
-              </div>
-            </div>
 
             <div class="form-row">
               <label for="title">Title</label>
