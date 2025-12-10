@@ -64,11 +64,12 @@ You can also see live demo [here](https://virt.moe/cloudflare-error-page/example
 
 A demo server using Flask is also available in [flask_demo.py](examples/flask_demo.py).
 
-### Node.js
+### Node.js/NPM
 
-``` JavaScript
-// Coming soon!
-```
+A Node.js package is available in [nodejs](nodejs) folder. However currently it supports only Node.js but not web browsers,
+and we plan to refactor it into a shared package that works in both environments.
+
+(Thanks [@junduck](https://github.com/junduck) for creating this.)
 
 ### PHP
 
