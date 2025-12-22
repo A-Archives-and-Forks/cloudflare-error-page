@@ -1,0 +1,29 @@
+<%
+// Covert the parameters to Python format object
+const randomKey = Math.random() + ''
+const paramsArg = JSON.stringify(params, (key, value) => {
+    if (typeof value === 'boolean') {
+        return randomKey + value.toString()
+    } else if (value === null) {
+        return randomKey + 'null'
+    } else {
+        return value
+    }
+}, 4)
+    .replace(`"${randomKey}true"`, 'True')
+    .replace(`"${randomKey}false"`, 'False')
+    .replace(`"${randomKey}null"`, 'None')
+_%>
+from flask import Flask
+from cloudflare_error_page import render as render_cf_error_page
+
+app = Flask(__name__)
+
+# Define a route for GET requests to the root URL
+@app.route('/')
+def index():
+    # Render the error page
+    return render_cf_error_page(<%=paramsArg.replaceAll('\n', '\n    ')%>), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

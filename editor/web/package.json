@@ -10,15 +10,18 @@
     "preview": "npm run build && vite preview"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "@types/ejs": "^3.1.5",
+    "@types/html-minifier-terser": "^7.0.2",
     "@types/node": "^24.10.2",
     "html-minifier-terser": "^7.2.0",
     "prettier": "3.7.4",
     "typescript": "^5.9.3",
-    "vite": "^7.2.6"
+    "vite": "^7.2.6",
+    "vite-plugin-static-copy": "^3.1.4"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "ejs": "^3.1.10",
-    "vite-plugin-static-copy": "^3.1.4"
+    "ejs": "^3.1.10"
   }
 }

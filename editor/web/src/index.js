@@ -7,8 +7,12 @@
 */
 import ejs from 'ejs';
 import templateContent from './template.ejs?raw';
+
+import 'bootstrap/js/src/modal.js';
+import Popover from 'bootstrap/js/src/popover.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { jsCodeGen, jsonCodeGen, pythonCodeGen } from './codegen';
 
 let template = ejs.compile(templateContent);
 
@@ -332,22 +336,6 @@ function createShareableLink() {
       $('shareLink').value = result.url;
     });
 }
-function exportJSON() {
-  let content = JSON.stringify(lastCfg, null, 4);
-  const file = new File([content], 'cloudflare-error-page-params.json', {
-    type: 'text/plain',
-  });
-  const url = URL.createObjectURL(file);
-
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = file.name;
-  document.body.appendChild(link);
-  link.click();
-
-  document.body.removeChild(link);
-  window.URL.revokeObjectURL(url);
-}
 function resizePreviewFrame() {
   const iframe = $('previewFrame');
   const height = iframe.contentWindow.document.body.scrollHeight + 2;
@@ -387,24 +375,20 @@ $('presetSelect').addEventListener('change', (e) => {
 // Render / Open button handlers
 //   $('btnRender').addEventListener('click', e => { e.preventDefault(); render(); });
 $('btnOpen').addEventListener('click', (e) => {
-  e.preventDefault();
   openInNewTab();
 });
 $('btnShare').addEventListener('click', (e) => {
-  e.preventDefault();
   createShareableLink();
 });
-$('btnExport').addEventListener('click', (e) => {
-  e.preventDefault();
-  exportJSON();
-});
-
+const shareLinkPopover = new Popover($('btnCopyLink'));
 $('btnCopyLink').addEventListener('click', () => {
   const field = $('shareLink');
   field.select();
-  field.setSelectionRange(0, field.value.length);
   navigator.clipboard.writeText(field.value).then(() => {
-    // No notification required unless you want one
+    shareLinkPopover.show();
+    setTimeout(() => {
+      shareLinkPopover.hide();
+    }, 2000);
   });
 });
 
@@ -413,8 +397,7 @@ const inputs = document.querySelectorAll('#editorForm input, #editorForm textare
 inputs.forEach((inp) => {
   inp.addEventListener('input', () => render());
   // for radio change events (error_source)
-  if (inp.type === 'radio')
-    inp.addEventListener('change', () => render());
+  if (inp.type === 'radio') inp.addEventListener('change', () => render());
 });
 
 // Automatically update frame height
@@ -423,3 +406,91 @@ const iframe = $('previewFrame');
 observer.observe(iframe.contentWindow.document.body);
 // resizePreviewFrame()
 setInterval(resizePreviewFrame, 1000); // TODO...
+
+function saveFile(content, saveName) {
+  const file = new File([content], saveName, {
+    type: 'text/plain',
+  });
+  const url = URL.createObjectURL(file);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file.name;
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
+}
+
+let saveAsType;
+let saveAsContent;
+
+function updateSaveAsDialog(e) {
+  if (e) {
+    const target = e.target;
+    saveAsType = target.dataset.type;
+  } else {
+    saveAsType = 'json';
+  }
+  let codegen;
+  switch (saveAsType) {
+    case 'js':
+      codegen = jsCodeGen;
+      break;
+    case 'json':
+      codegen = jsonCodeGen;
+      break;
+    case 'python':
+      codegen = pythonCodeGen;
+      break;
+  }
+  const params = { ...lastCfg };
+  delete params.time;
+  $('saveAsDialogCode').innerHTML = saveAsContent = codegen.generate(params);
+  $('saveAsDialogCode').scrollTop = 0;
+
+  document.querySelectorAll('#saveAsDialogTypes button').forEach((element) => {
+    const isCurrent = element.dataset.type == saveAsType;
+    if (isCurrent) {
+      element.classList.add('active');
+    } else {
+      element.classList.remove('active');
+    }
+    element.ariaCurrent = isCurrent;
+  });
+}
+$('saveAsDialog').addEventListener('show.bs.modal', (e) => {
+  updateSaveAsDialog();
+});
+document.querySelectorAll('#saveAsDialogTypes button').forEach((element) => {
+  element.addEventListener('click', updateSaveAsDialog);
+});
+
+const saveAsDialogCopyPopover = new Popover($('saveAsDialogCopyBtn'));
+$('saveAsDialogCopyBtn').addEventListener('click', (e) => {
+  const field = $('saveAsDialogCode');
+  field.select();
+  // field.setSelectionRange(0, field.value.length);
+  navigator.clipboard.writeText(field.value).then(() => {
+    saveAsDialogCopyPopover.show();
+    setTimeout(() => {
+      saveAsDialogCopyPopover.hide();
+    }, 2000);
+  });
+});
+$('saveAsDialogSaveBtn').addEventListener('click', (e) => {
+  let saveName = '';
+  switch (saveAsType) {
+    case 'js':
+      saveName = 'cf-error-page-example.js';
+      break;
+    case 'json':
+      saveName = 'cf-error-page-params.json';
+      break;
+    case 'python':
+      saveName = 'cf_error_page_example.py';
+      break;
+  }
+  saveFile(saveAsContent, saveName);
+});
