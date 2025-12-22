@@ -23,5 +23,8 @@ include = [
     "cloudflare_error_page/templates/*",
 ]
 
+[tool.hatch.build.targets.wheel.hooks.custom]
+path = "scripts/hatch_build.py"
+
 [tool.hatch.version]
 path = "cloudflare_error_page/__init__.py"

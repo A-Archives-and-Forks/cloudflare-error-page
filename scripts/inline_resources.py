@@ -4,7 +4,7 @@ from urllib.parse import quote
 
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-resources_folder = os.path.join(root,'resources')
+resources_folder = os.path.join(root, 'resources')
 
 
 def read_file(path: str) -> str:
@@ -49,7 +49,7 @@ def inline_css_resource(original_file: str, css_file: str, output_file: str):
     write_file(output_file, original_data)
 
 
-if __name__ == '__main__':
+def generate_inlined_css():
     inline_svg_resources(
         os.path.join(resources_folder, 'styles/main-original.css'),
         [
@@ -61,11 +61,10 @@ if __name__ == '__main__':
         ],
         os.path.join(resources_folder, 'styles/main.css'),
         )
-    inline_css_resource(
-        os.path.join(resources_folder, 'templates/error.html'),
-        os.path.join(resources_folder, 'styles/main.css'),
-        os.path.join(root, 'cloudflare_error_page/templates/error.html'),
-    )
+
+
+if __name__ == '__main__':
+    generate_inlined_css()
     inline_css_resource(
         os.path.join(resources_folder, 'templates/error.ejs'),
         os.path.join(resources_folder, 'styles/main.css'),

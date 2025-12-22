@@ -14,7 +14,15 @@
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 {% block html_head %}{% endblock %}
-<!-- @INLINE_CSS_HERE@ -->
+<style>
+{% if html_style %}
+    {# Support custom stylesheet #}
+    {{ html_style | safe }}
+{% else %}
+    {# Default stylesheet #}
+    {% include 'main.css' %}
+{% endif %}
+</style>
 </head>
 <body>
 <div id="cf-wrapper">

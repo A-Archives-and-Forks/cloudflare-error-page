@@ -20,7 +20,7 @@ env = Environment(
     lstrip_blocks=True,
 )
 
-base_template: Template = env.get_template("error.html")
+base_template: Template = env.get_template("template.html")
 
 
 class ErrorPageParams(TypedDict):
