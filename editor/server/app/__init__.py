@@ -56,7 +56,9 @@ def _initialize_app_config(app: Flask):
             'isolation_level': 'SERIALIZABLE',
             # "execution_options": {"autobegin": False}
         }
-    static_dir = os.path.join(app.instance_path, app.config.get('STATIC_DIR', '../../web/dist'))
+    static_dir = os.getenv('STATIC_DIR')
+    if not static_dir:
+        static_dir = os.path.join(app.instance_path, app.config.get('STATIC_DIR', '../../web/dist'))
     app.logger.info(f'Static directory: {static_dir}')
 
 

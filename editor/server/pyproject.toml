@@ -12,9 +12,14 @@ dependencies = [
   "Flask",
   "Flask-Limiter",
   "Flask-SqlAlchemy",
-  "cloudflare-error-page @ {root:uri}/../../",
+  "cloudflare-error-page",
 ]
 version = "0.0.0"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "cloudflare-error-page @ {root:uri}/../../",
+]
 
 [tool.hatch.metadata]
 allow-direct-references = true

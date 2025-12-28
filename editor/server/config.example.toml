@@ -1,4 +1,5 @@
-# Directory of static files for editor (.html, .js, ...), relative to instance dir
+# Directory of static files for editor (.html, .js, ...), relative to instance dir.
+# Overridden by environment varable 'STATIC_DIR'
 STATIC_DIR = '../../web/dist'
 
 # Url prefix for app urls
