@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "cloudflare-error-page": "../../javascript",
+    "cloudflare-error-page": "file:../../javascript",
     "ejs": "^3.1.10",
     "prismjs": "^1.30.0"
   }

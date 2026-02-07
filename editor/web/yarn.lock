@@ -397,7 +397,7 @@ clean-css@~5.3.2:
   dependencies:
     source-map "~0.6.0"
 
-cloudflare-error-page@../../javascript:
+"cloudflare-error-page@file:../../javascript":
   version "0.1.0"
   dependencies:
     ejs "^3.1.10"

@@ -30,8 +30,8 @@ class EjsCodeGen implements CodeGen {
 }
 
 function getErrorCode(error_code?: string | number): string {
-  const errorCode = error_code ?? '';
-  return /\d{3}/.test(errorCode + '') ? errorCode : '500';
+  const errorCode = error_code ? error_code + '' : '';
+  return /^\d{3}$/.test(errorCode) ? errorCode : '500';
 }
 
 class JSCodeGen extends EjsCodeGen {

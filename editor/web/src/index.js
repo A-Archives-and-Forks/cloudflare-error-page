@@ -38,7 +38,6 @@ let initialConfig = {
   },
   cloudflare_status: {
     status: 'error',
-    location: 'San Francisco',
     name: 'Cloudflare',
     status_text: 'Error',
   },
@@ -317,7 +316,10 @@ function openInNewTab() {
   wnd.document.documentElement.innerHTML = lastRenderedHtml;
 }
 
+let createLinkBusy = false;
 function createShareableLink() {
+  if (createLinkBusy) return;
+  createLinkBusy = true;
   $('shareLink').value = 'Creating...';
   fetch('../s/create', {
     method: 'POST',
@@ -327,6 +329,7 @@ function createShareableLink() {
     body: JSON.stringify({
       parameters: window.lastCfg,
     }),
+    signal: AbortSignal.timeout(5000), // timeout
   })
     .then((response) => {
       if (!response.ok) {
@@ -343,6 +346,9 @@ function createShareableLink() {
     .catch((e) => {
       alert(e);
       $('shareLink').value = '';
+    })
+    .finally(() => {
+      createLinkBusy = false;
     });
 }
 function resizePreviewFrame() {
